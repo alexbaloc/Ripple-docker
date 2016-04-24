@@ -23,23 +23,13 @@ RUN apt-get -y install wget software-properties-common
 
 
 # --- --- ---  Install dependencies --- --- ---
-#RUN echo "deb http://ftp.debian.org/debian/ stretch main" >> /etc/apt/sources.list
-#RUN apt-get -y update
-
 RUN cd rippled/Builds/Ubuntu && ./install_rippled_depends_ubuntu.sh 
+
+# --- --- ---  Build RippleD --- --- ---
 RUN cd rippled && scons -j 4
 
-#&& ./install_boost.sh
 
-#clang 3.7 is not available in the standard PPA
-
-#RUN apt-get -y install wget
-#RUN wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
-#RUN echo "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.7 main" >> /etc/apt/sources.list
-#RUN apt-get update
-
-#RUN cd rippled/Builds/Ubuntu && ./build_clang_libs.sh
-
-
-
+# --- --- ---  Configure  & start--- --- ---
+#create DB folder
+RUN cd /var/lib && mkdir -p rippled/db
 
